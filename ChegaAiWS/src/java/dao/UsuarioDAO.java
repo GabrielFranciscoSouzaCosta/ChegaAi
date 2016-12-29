@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Usuario;
 
 public class UsuarioDAO {
@@ -38,6 +40,23 @@ public class UsuarioDAO {
     return usuarios;
    }
    
-   // metodo para
+   // metodo para criar usuario
+   public boolean InserirUsuario(Usuario u){
+       try {
+           sql =  "INSERT INTO Usuario (nome, senha) VALUES (?,?);";
+           con = C.cb();
+           pst = con.prepareStatement(sql);
+           pst.setString(1, u.getNome());
+           pst.setString(2, u.getSenha());
+           pst.execute();
+           C.db();
+           return true;
+       } catch (ClassNotFoundException | SQLException ex) {
+           Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+           return false;
+       }
+   }
+   
+   
    
 }
