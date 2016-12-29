@@ -43,11 +43,15 @@ public class UsuarioDAO {
    // metodo para criar usuario
    public boolean InserirUsuario(Usuario u){
        try {
-           sql =  "INSERT INTO Usuario (nome, senha) VALUES (?,?);";
+           sql =  "INSERT INTO Usuario (nome, cpf, senha,celular,email) VALUES (?,?,?,?,?);";
            con = C.cb();
            pst = con.prepareStatement(sql);
            pst.setString(1, u.getNome());
-           pst.setString(2, u.getSenha());
+           pst.setString(2, u.getCpf());
+           pst.setString(3, u.getSenha());
+           pst.setString(4, u.getCelular());
+           pst.setString(5, u.getEmail());
+
            pst.execute();
            C.db();
            return true;
