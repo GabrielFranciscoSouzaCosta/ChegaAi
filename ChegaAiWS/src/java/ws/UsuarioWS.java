@@ -12,6 +12,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import modelo.Usuario;
 
@@ -50,10 +51,35 @@ public class UsuarioWS {
         Gson g = new Gson();
         Usuario u = g.fromJson(content, Usuario.class);
         UsuarioDAO dao = new UsuarioDAO();
-        return dao.InserirUsuario(u);
+        return dao.inserirUsuario(u);
         
     }
+    //deletar usuarios
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/deletar/{id}")
+    public String deletarUsuario(@PathParam("id")int id){
+        
+        UsuarioDAO dao = new UsuarioDAO();
+        
+        if(dao.deletarUsuario(id)){
+            return "true";
+        }else{
+            return "false";
+        }
     
+    }
+    
+    // atualizar usuario
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/atualizar")
+    public boolean atualizarUsuario(String content){
+        Gson g = new Gson();  
+        Usuario u = (Usuario) g.fromJson(content,Usuario.class); 
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.atualizarUsuario(u);
+    }
 
     @PUT
     @Consumes(javax.ws.rs.core.MediaType.APPLICATION_JSON)
