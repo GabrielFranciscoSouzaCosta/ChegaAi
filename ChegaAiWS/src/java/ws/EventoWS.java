@@ -76,6 +76,17 @@ public class EventoWS {
         }
     }
     
+    //update evento
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/atualizarEvento")
+    public boolean atualizarEvento(String content){
+        Gson g = new Gson();
+        Evento e = (Evento) g.fromJson(content,Evento.class);
+        EventoDAO dao = new EventoDAO();
+        return  dao.atualizarEvento(e);
+    }
+    
     /**
      * PUT method for updating or creating an instance of EventoWS
      * @param content representation for the resource

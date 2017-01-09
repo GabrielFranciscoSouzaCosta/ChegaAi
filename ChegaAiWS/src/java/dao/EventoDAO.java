@@ -78,5 +78,23 @@ public class EventoDAO {
            return false;
        }
    }
-    
+   
+   //atualizar evento
+   public boolean atualizarEvento(Evento e){
+       try {
+           sql = "UPDATE Evento set descricao = ? , data = ? , endereço = ? WHERE idEvento = ?;";
+           con = C.cb();
+           pst = con.prepareStatement(sql);
+           pst.setString(1, e.getDescricao());
+           pst.setString(2, e.getData());
+           pst.setString(3, e.getEndereco());
+           pst.setInt(4, e.getIdEvento());
+           pst.executeUpdate();
+           C.db();
+           return true;
+       } catch (ClassNotFoundException | SQLException ex) {
+           Logger.getLogger(EventoDAO.class.getName()).log(Level.SEVERE, null, ex);
+           return false;
+       }
+   }   
 }

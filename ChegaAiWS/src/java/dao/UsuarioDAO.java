@@ -80,7 +80,7 @@ public class UsuarioDAO {
    
    //metodo para update de usuario
    public boolean atualizarUsuario(Usuario u){
-        
+       
        try {
            sql = "UPDATE Usuario SET nome = ? , cpf = ? , senha = ? , celular = ? , email = ? WHERE idUsuario = ?;";
            con = C.cb();
