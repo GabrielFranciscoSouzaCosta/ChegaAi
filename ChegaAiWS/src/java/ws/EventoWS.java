@@ -55,12 +55,12 @@ public class EventoWS {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("inserirEvento")
-    public boolean inserirEvento(String content){
-        Gson g = new Gson();
-        Evento e = g.fromJson(content, Evento.class);
-        EventoDAO dao = new EventoDAO();
-        return dao.criarEvento(e);
-    }
+        public boolean inserirEvento(String content){
+            Gson g = new Gson();
+            Evento e = g.fromJson(content, Evento.class);
+            EventoDAO dao = new EventoDAO();
+            return dao.criarEvento(e);
+        }
     
     //deletar eventos
     @GET
