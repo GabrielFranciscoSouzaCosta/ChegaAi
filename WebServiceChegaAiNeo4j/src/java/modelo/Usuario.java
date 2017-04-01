@@ -7,7 +7,7 @@ public class Usuario {
     int id;
     String nome;
     String email;
-            
+    String senha;        
     public Usuario() {
     }
 
@@ -43,4 +43,10 @@ public class Usuario {
         this.email = email;
     }
     
+    public String getSenha(){
+        return senha;
+    }
+    public void setSenha(String senha){
+        this.senha = senha;
+    }
 }

@@ -5,56 +5,57 @@
  */
 package ws;
 
-import java.sql.SQLException;
+
+import DAO.UsuarioDAO;
+import com.google.gson.Gson;
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
-import org.neo4j.driver.v1.AuthTokens;
-import org.neo4j.driver.v1.Driver;
-import org.neo4j.driver.v1.GraphDatabase;
-import org.neo4j.driver.v1.Record;
-import org.neo4j.driver.v1.Session;
-import org.neo4j.driver.v1.StatementResult;
+import modelo.Usuario;
 
 @Path("usuario")
 public class UsuarioWS {
-    
-    Driver driver =  GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j","8183"));
-    Session session = driver.session();
-    
     @Context
     private UriInfo context;
 
     public UsuarioWS() {
     }
     
-    //metodo para listar usuario
+    //metodo para listar usuarios
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("listar")
-    public String listarUsuarios() throws ClassNotFoundException, SQLException{
-        String retorno =" ";
+    public String listarUsuarios(){
+        Gson g = new Gson();
+        UsuarioDAO dao = new UsuarioDAO();
+        List<Usuario> usuarios = dao.getUsuarios();
         
-        StatementResult result = session.run("match (n) return n.name");
-        while(result.hasNext()){
-            Record record = result.next();
-            retorno = record.get("n.name").asString();
-        }
-        
-        return retorno;
+        return g.toJson(usuarios);
        
     }
     //metodo para inserir usuario
-    
+    //inserir usuarios
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/inserir")
+    public boolean inserirUsuario(String content){
+        Gson g = new Gson();
+        Usuario u = g.fromJson(content, Usuario.class);
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.inserirUsuario(u);    
+    }
     //metodo para deletar usuario
-    
+    //metodo para buscar um usuario
     //metodo para atualizar usuario
     
+    //
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public String getXml() {

@@ -31,6 +31,7 @@ public class UsuarioWS {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
+    
     // listar usuarios
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,8 +40,12 @@ public class UsuarioWS {
         Gson g = new Gson();
         UsuarioDAO dao = new UsuarioDAO();
         List<Usuario> usuarios = dao.getUsuarios();
+        Usuario u = new Usuario();
+        u = usuarios.get(0);
         
-        return g.toJson(usuarios);
+        //System.out.println("nome" + u.getNome());
+    return g.toJson(usuarios);
+    //return null;
     }
     
     //inserir usuarios
@@ -51,8 +56,7 @@ public class UsuarioWS {
         Gson g = new Gson();
         Usuario u = g.fromJson(content, Usuario.class);
         UsuarioDAO dao = new UsuarioDAO();
-        return dao.inserirUsuario(u);
-        
+        return dao.inserirUsuario(u);    
     }
     //deletar usuarios
     @GET
