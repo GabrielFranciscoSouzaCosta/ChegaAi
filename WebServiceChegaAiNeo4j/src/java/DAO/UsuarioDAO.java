@@ -10,7 +10,7 @@ import org.neo4j.driver.v1.StatementResult;
 
 public class UsuarioDAO {
 
-// listar usuarios
+// listar todos usuarios
 public List<Usuario> getUsuarios(){
     
     List<Usuario> usuarios = new ArrayList<>(); // cria a lista de users
@@ -55,12 +55,52 @@ public boolean inserirUsuario(Usuario u){
     
 }
 //buscar um usuario
+public Usuario buscarUsuario(int id){
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("match (u:Usuario) where ID(u)= "+ id+" return u.nome as nome, u.email as email,ID(u) as id ");
+    Record record = result.next();
+    Usuario u = new Usuario();
+    
+    u.setId(record.get("id").asInt());
+    u.setNome(record.get("nome").asString());
+    u.setEmail(record.get("email").asString());
+ c.encerraConexao();
+ return u;
+}
 
 
 
 // deletar usuario
+public boolean deletarUsuario(int id){
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("MATCH (u:Usuario) where ID(u)= "+id+" OPTIONAL MATCH (u)-[r]-()" +
+"DELETE u,r");
+c.encerraConexao();
 
-// criar usuario    
+if(result!= null){
+        return true;
+    }else{
+        return false;
+    }
+
+}
+
+
+// atualizar usuario
+public boolean atualizarUsuario(Usuario u){
+    Con c = new Con();
+    int id = u.getId();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("match (u:Usuario) where ID(u)=" +id+" set u.nome = '"+ u.getNome()+"', u.email ='"+u.getEmail()+"' return u");
+    c.encerraConexao();
+    if(result!=null){
+        return true;
+    }else{
+        return false;
+    }
+}
 
     
-}
+} 

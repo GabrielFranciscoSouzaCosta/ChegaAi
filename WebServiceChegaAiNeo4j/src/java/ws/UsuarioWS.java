@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ws;
 
 
@@ -17,6 +13,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import modelo.Usuario;
 
@@ -37,11 +34,9 @@ public class UsuarioWS {
         UsuarioDAO dao = new UsuarioDAO();
         List<Usuario> usuarios = dao.getUsuarios();
         
-        return g.toJson(usuarios);
-       
+        return g.toJson(usuarios); 
     }
     //metodo para inserir usuario
-    //inserir usuarios
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/inserir")
@@ -52,8 +47,41 @@ public class UsuarioWS {
         return dao.inserirUsuario(u);    
     }
     //metodo para deletar usuario
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/deletarUsuario/{id}")
+    public String deletarEvento(@PathParam("id")int id){
+        UsuarioDAO dao = new UsuarioDAO();
+        
+        if (dao.deletarUsuario(id)){
+            return "true";
+        }else {
+            return "false";
+        }
+    }
+    
     //metodo para buscar um usuario
-    //metodo para atualizar usuario
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/buscarUsuario/{id}")
+    public String buscarUsuario(@PathParam("id")int id){
+        UsuarioDAO dao = new UsuarioDAO();
+        Gson g = new Gson();
+        
+        Usuario usuario = dao.buscarUsuario(id);
+        return g.toJson(usuario);
+    }
+    // atualizar evento
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/atualizarUsuario")
+    public boolean atualizarEvento(String content){
+        Gson g = new Gson();
+        Usuario u = (Usuario) g.fromJson(content,Usuario.class);
+        UsuarioDAO dao = new UsuarioDAO();
+        return  dao.atualizarUsuario(u);
+    }
+    
     
     //
     @GET

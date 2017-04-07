@@ -13,6 +13,12 @@ public class Tag {
         this.id = id;
         this.nome = nome;
     }
+
+    public Tag() {
+    }
+    
+    
+    
     
     public int getId() {
         return id;
