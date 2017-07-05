@@ -83,7 +83,7 @@ public Sessao autenticacao(String email, String senha){
         
     }else{
     
-        Sessao criaSessao = new Sessao(); // instancia um objeto sessao
+        //Sessao criaSessao = new Sessao(); // instancia um objeto sessao
         Usuario u = new Usuario();
         
         Record record = result.next();        
@@ -93,13 +93,16 @@ public Sessao autenticacao(String email, String senha){
             u.setEmail(record.get("email").asString());    
         
         //aqui estou criando um nodo de sessao no banco 
-        StatementResult result2  = session.run("create (n:Sessao{email:'"+record.get("email").asString()+"',senha:'"+ record.get("senha").asString() + "',nome:'"+record.get("nome").asString()+"'})");
-        
-        //Record record2 = result.next();
-        //record2.get("id");
-        criaSessao= new Sessao(u);
-        
+        session.run("create (n:Sessao{email:'"+record.get("email").asString()+"',senha:'"+ record.get("senha").asString() + "',nome:'"+record.get("nome").asString()+"'})");
+        // aqui estou executando uma query para buscar o id da sessao gerada
+        StatementResult result2 = session.run("Match (n) where n.email='"+record.get("email").asString()+"'Return ID(n) as id Order by ID(n) desc Limit 1");
+
+        //record usado para guardar o id da sessao gerada
+        Record record2 = result2.next();
+        //chama o construtor da sessao mandando o id e o objeto usuario da sessao
+        Sessao criaSessao= new Sessao(record2.get("id").asInt(),u);
         c.encerraConexao();
+        
         return criaSessao; // retorna o objeto sessao que foi gerada  
     }
 }

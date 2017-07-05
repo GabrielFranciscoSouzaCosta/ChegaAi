@@ -92,7 +92,7 @@ public class UsuarioWS {
         UsuarioDAO dao = new UsuarioDAO();
         Gson g = new Gson();
         
-        Sessao sessao = dao.autenticacao(email, senha);
+        Sessao sessao = dao.autenticacao(email,senha);
         
         return g.toJson(sessao);
     }
