@@ -8,17 +8,18 @@ public class Evento {
     int id;
     String titulo;
     String descricao;
+    String data;
 
-    public Evento(int id, String titulo, String descricao) {
+    public Evento(int id, String titulo, String descricao, String data) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
+        this.data = data;
     }
     
     public Evento(){
     
     }
-    
     
     public int getId() {
         return id;
@@ -43,10 +44,13 @@ public class Evento {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    
-    
-    
-    
-    
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
     
 }

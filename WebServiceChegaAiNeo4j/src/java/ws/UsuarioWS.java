@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import modelo.Sessao;
 import modelo.Usuario;
 
 @Path("usuario")
@@ -71,15 +72,29 @@ public class UsuarioWS {
         Usuario usuario = dao.buscarUsuario(id);
         return g.toJson(usuario);
     }
-    // atualizar evento
+    
+    // atualizar usuario
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/atualizarUsuario")
-    public boolean atualizarEvento(String content){
+    public boolean atualizarUsuario(String content){
         Gson g = new Gson();
         Usuario u = (Usuario) g.fromJson(content,Usuario.class);
         UsuarioDAO dao = new UsuarioDAO();
         return  dao.atualizarUsuario(u);
+    }
+    
+    //metodo para autenticacao
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/autenticacao/{email}/{senha}")
+    public String autenticacao(@PathParam("email") String email, @PathParam("senha") String senha ){
+        UsuarioDAO dao = new UsuarioDAO();
+        Gson g = new Gson();
+        
+        Sessao sessao = dao.autenticacao(email, senha);
+        
+        return g.toJson(sessao);
     }
     
     

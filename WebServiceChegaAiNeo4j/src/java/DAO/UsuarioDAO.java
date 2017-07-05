@@ -3,6 +3,7 @@ package DAO;
 import Conexao.Con;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Sessao;
 import modelo.Usuario;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
@@ -67,6 +68,40 @@ public Usuario buscarUsuario(int id){
     u.setEmail(record.get("email").asString());
  c.encerraConexao();
  return u;
+}
+
+//autenticar usuario
+public Sessao autenticacao(String email, String senha){
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    
+    StatementResult result = session.run("match (u:Usuario) where u.email= '"+ email +"' AND u.senha ='" + senha+"'  return u.nome as nome, u.email as email,ID(u) as id, u.senha as senha ");
+    
+    if(result == null){
+     
+        return null;
+        
+    }else{
+    
+        Sessao criaSessao = new Sessao(); // instancia um objeto sessao
+        Usuario u = new Usuario();
+        
+        Record record = result.next();        
+    
+            u.setId(record.get("id").asInt());
+            u.setNome(record.get("nome").asString());
+            u.setEmail(record.get("email").asString());    
+        
+        //aqui estou criando um nodo de sessao no banco 
+        StatementResult result2  = session.run("create (n:Sessao{email:'"+record.get("email").asString()+"',senha:'"+ record.get("senha").asString() + "',nome:'"+record.get("nome").asString()+"'})");
+        
+        //Record record2 = result.next();
+        //record2.get("id");
+        criaSessao= new Sessao(u);
+        
+        c.encerraConexao();
+        return criaSessao; // retorna o objeto sessao que foi gerada  
+    }
 }
 
 
