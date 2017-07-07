@@ -51,7 +51,7 @@ public class UsuarioWS {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deletarUsuario/{id}")
-    public String deletarEvento(@PathParam("id")int id){
+    public String deletarUsuario(@PathParam("id")int id){
         UsuarioDAO dao = new UsuarioDAO();
         
         if (dao.deletarUsuario(id)){
@@ -96,6 +96,22 @@ public class UsuarioWS {
         
         return g.toJson(sessao);
     }
+    
+      //metodo para sair da sessao
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/logout/{id}")
+    public String logout(@PathParam("id")int id){
+        UsuarioDAO dao = new UsuarioDAO();
+        
+        if (dao.logout(id)){
+            return "true";
+        }else {
+            return "false";
+        }
+    }
+    
+    
     
     
     //

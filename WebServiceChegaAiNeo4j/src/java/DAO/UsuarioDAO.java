@@ -107,7 +107,21 @@ public Sessao autenticacao(String email, String senha){
     }
 }
 
+public boolean logout(int id){
+    
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("MATCH (s:Sessao) where ID(s)= "+id+" OPTIONAL MATCH (u)-[r]-()" +
+"DELETE s,r");
+c.encerraConexao();
 
+if(result!= null){
+        return true;
+    }else{
+        return false;
+    }
+    
+}
 
 // deletar usuario
 public boolean deletarUsuario(int id){
