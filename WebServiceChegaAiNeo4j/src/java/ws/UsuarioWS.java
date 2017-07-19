@@ -110,10 +110,7 @@ public class UsuarioWS {
             return "false";
         }
     }
-    
-    
-    
-    
+        
     //
     @GET
     @Produces(MediaType.APPLICATION_XML)
