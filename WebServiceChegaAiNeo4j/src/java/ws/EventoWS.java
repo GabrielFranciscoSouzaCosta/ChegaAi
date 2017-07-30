@@ -42,12 +42,12 @@ public class EventoWS {
     }
     
     // inserir eventos 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/inserir")
-    public boolean inserirUsuario(String content){
-        Gson g = new Gson();
-        Evento  e = g.fromJson(content, Evento.class);
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/inserir/{titulo}/{descricao}/{data}/{endereco}")
+    public String inserirUsuario(@PathParam("titulo") String titulo,@PathParam("descricao") String descricao,@PathParam("data") String data,@PathParam("endereco") String endereco){
+
+        Evento e = new Evento(titulo,descricao,data,endereco);
         EventoDAO dao = new EventoDAO();
         return dao.inserirEvento(e);    
     }

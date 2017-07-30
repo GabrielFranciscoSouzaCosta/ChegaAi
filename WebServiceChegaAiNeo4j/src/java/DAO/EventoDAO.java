@@ -6,9 +6,7 @@ import modelo.Evento;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
-
 public class EventoDAO {
-
 //metoto para listar evento
 public List<Evento> getEventos(){
     List<Evento> eventos = new ArrayList<>(); 
@@ -16,7 +14,7 @@ public List<Evento> getEventos(){
     Con c = new Con(); // cria o objeto de conexao
     Session session =  c.conecta(); // chama o metodo de conectar
     
-    StatementResult result = session.run("match (n:Evento) return n.titulo as titulo, n.descricao as descricao, ID(n) as id, n.data as data");
+    StatementResult result = session.run("match (n:Evento) return n.titulo as titulo, n.descricao as descricao, ID(n) as id, n.data as data, n.endereco as endereco");
     
     while(result.hasNext()){
         Record record = result.next();
@@ -25,6 +23,7 @@ public List<Evento> getEventos(){
         e.setDescricao(record.get("descricao").asString());
         e.setTitulo(record.get("titulo").asString());
         e.setData(record.get("data").asString());
+        e.setEndereco(record.get("endereco").asString());
 
         eventos.add(e);
     }
@@ -32,27 +31,29 @@ public List<Evento> getEventos(){
     return eventos;
 }
 //metodo para inserir evento
-public boolean inserirEvento(Evento e){
+public String inserirEvento(Evento e){
+    
     String titulo = e.getTitulo();
     String descricao = e.getDescricao();
     String data = e.getData();
+    String endereco = e.getEndereco();
     
     Con c = new Con();
     Session session =  c.conecta(); // chama o metodo de conectar
-    StatementResult result = session.run("CREATE (u:Evento {titulo:'"+ titulo +"', descricao:'"+descricao +"',data:'"+data+"'})");
+    StatementResult result = session.run("CREATE (u:Evento {titulo:'"+ titulo +"', descricao:'"+descricao +"',data:'"+data+"', endereco:'"+endereco+"'})");
     c.encerraConexao();
+    
     if(result!= null){
-        return true;
+        return "true";
     }else{
-        return false;
+        return "false";
     }
 }
 //metodo para deletar evento
 public boolean deletarEvento(int id){
     Con c = new Con();
     Session session = c.conecta(); // chama o metodo para conectar
-    StatementResult result = session.run("MATCH (e:Evento) where ID(e)= "+id+" OPTIONAL MATCH (e)-[r]-()" +
-"DELETE e,r");
+    StatementResult result = session.run("MATCH (e:Evento) where ID(e)= "+id+" detach delete e");
 c.encerraConexao();
 
 if(result!= null){
@@ -61,13 +62,11 @@ if(result!= null){
         return false;
     }
 }
-
 // metodo para buscar um evento
-
 public Evento buscarEvento(int id){
     Con c = new Con();
     Session session = c.conecta(); // chama o metodo para conectar
-    StatementResult result = session.run("match (e:Evento) where ID(e)= "+ id+" return e.descricao as descricao, e.titulo as titulo,ID(e) as id, e.data as data");
+    StatementResult result = session.run("match (e:Evento) where ID(e)= "+ id+" return e.descricao as descricao, e.titulo as titulo,ID(e) as id, e.data as data, e.endereco as endereco");
     Record record = result.next();
     Evento e = new Evento();
     
@@ -75,16 +74,18 @@ public Evento buscarEvento(int id){
     e.setDescricao(record.get("descricao").asString());
     e.setTitulo(record.get("titulo").asString());
     e.setData(record.get("data").asString());
+    e.setEndereco(record.get("endereco").asString());
+
+    
  c.encerraConexao();
  return e;
 }
-
 //metodo para atualizar evento
 public boolean atualizarEvento(Evento e){
     Con c = new Con();
     int id = e.getId();
     Session session = c.conecta(); // chama o metodo para conectar
-    StatementResult result = session.run("match (e:Evento) where ID(e)=" +id+" set e.titulo = '"+ e.getTitulo()+"', e.descricao ='"+e.getDescricao()+"', '"+ e.getData()+"' return e");
+    StatementResult result = session.run("match (e:Evento) where ID(e)=" +id+" set e.titulo = '"+ e.getTitulo()+"', e.descricao ='"+e.getDescricao()+"', e.data='"+ e.getData()+"', e.endereco='"+e.getEndereco()+"'return e");
     c.encerraConexao();
     if(result!=null){
         return true;

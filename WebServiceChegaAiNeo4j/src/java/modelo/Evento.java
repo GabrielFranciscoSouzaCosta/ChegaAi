@@ -9,12 +9,22 @@ public class Evento {
     String titulo;
     String descricao;
     String data;
+    String endereco;
+            
 
-    public Evento(int id, String titulo, String descricao, String data) {
+    public Evento(int id, String titulo, String descricao, String data, String endereco) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.data = data;
+        this.endereco = endereco;
+    }
+    
+    public Evento(String titulo, String descricao, String data, String endereco) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.data = data;
+        this.endereco = endereco;
     }
     
     public Evento(){
@@ -52,5 +62,14 @@ public class Evento {
     public void setData(String data) {
         this.data = data;
     }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+ 
     
 }
