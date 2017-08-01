@@ -36,20 +36,22 @@ public List<Usuario> getUsuarios(){
     
     
 // inserir usuario
-public boolean inserirUsuario(Usuario u){
+public String inserirUsuario(Usuario u){
     String nome = u.getNome();
     String email = u.getEmail();
     String senha = u.getSenha();
     
     Con c = new Con();
     Session session =  c.conecta(); // chama o metodo de conectar
-    StatementResult result = session.run("CREATE (u:Usuario {nome:'"+ nome +"', senha:'"+senha + "', email:'"+email +"'})");
+    StatementResult result = session.run("CREATE (u:Usuario {nome:'"+ nome +"', senha:'"+senha + "', email:'"+email +"'})return ID(u) as id");
+    Record record = result.next();
+    int resposta = record.get("id").asInt();
     c.encerraConexao();
     
     if(result!= null){
-        return true;
+        return ""+resposta;
     }else{
-        return false;
+        return "false";
     }
     
     

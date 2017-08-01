@@ -40,7 +40,7 @@ public String inserirTag(String t, int id){ // t =  nome da tag. id = id do nodo
         StatementResult result = session.run("MATCH (t:Tag) WHERE t.nome='"+t+"' return ID(t) as id");
         Record record = result.next();
         idTag = (record.get("id").asInt());
-
+  
             try{// teste para ver se a tag existe
                 StatementResult result2 = session.run("match (n)-[r:POSSUI]->(t:Tag) where ID(n) = "+id+" and ID(t)="+idTag+" return ID(r) as r");
                 Record record2 = result2.next();

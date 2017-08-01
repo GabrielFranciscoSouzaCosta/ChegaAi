@@ -49,7 +49,7 @@ public String inserirEvento(Evento e, int idUsuario){
     c.encerraConexao();
     
     if(result!= null){
-        return "true";
+        return ""+record.get("id").asInt();
     }else{
         return "false";
     }

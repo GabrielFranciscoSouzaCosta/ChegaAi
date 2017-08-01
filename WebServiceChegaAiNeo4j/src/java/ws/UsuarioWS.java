@@ -41,7 +41,7 @@ public class UsuarioWS {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{inserir}")
-    public boolean inserirUsuario(@PathParam("inserir")String content){
+    public String inserirUsuario(@PathParam("inserir")String content){
         Gson g = new Gson();
         Usuario u = g.fromJson(content, Usuario.class);
         UsuarioDAO dao = new UsuarioDAO();
