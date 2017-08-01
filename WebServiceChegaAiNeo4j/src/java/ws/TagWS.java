@@ -40,15 +40,14 @@ public class TagWS {
         return g.toJson(tags); 
     }
     
-    //metodo para inserir tag
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/inserir")
-    public boolean inserirUsuario(String content){
-        Gson g = new Gson();
-        Tag t = g.fromJson(content, Tag.class);
+    //chama o metodo para inserir tag
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/inserir/{content}/{id}")
+public String inserirTag(@PathParam("content")String content, @PathParam("id") int id){
+    
         TagDAO dao = new TagDAO();
-        return dao.inserirTag(t);    
+        return dao.inserirTag(content,id);    
     }
     
     //metodo para deletar tag

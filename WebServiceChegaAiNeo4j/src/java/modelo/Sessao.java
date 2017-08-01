@@ -3,18 +3,17 @@ package modelo;
 public class Sessao {
     
     int id;
-    Usuario u;
+    String nome;
+    String email;
+    int idUsuario;
+    public Sessao(int id, String nome, String email, int idUsuario) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.idUsuario = idUsuario;
+    }
 
     public Sessao() {
-    }
-    
-    public Sessao(Usuario u) {
-        this.u = u;
-    }
-    
-    public Sessao(int id, Usuario u) {
-        this.id = id;
-        this.u = u;
     }
 
     public int getId() {
@@ -25,12 +24,30 @@ public class Sessao {
         this.id = id;
     }
 
-    public Usuario getU() {
-        return u;
+    public String getNome() {
+        return nome;
     }
 
-    public void setU(Usuario u) {
-        this.u = u;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
-        
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 }
+    
+    
+

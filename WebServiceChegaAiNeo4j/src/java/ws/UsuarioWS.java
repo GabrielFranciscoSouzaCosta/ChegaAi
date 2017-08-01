@@ -38,14 +38,14 @@ public class UsuarioWS {
         return g.toJson(usuarios); 
     }
     //metodo para inserir usuario
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/inserir")
-    public boolean inserirUsuario(String content){
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{inserir}")
+    public boolean inserirUsuario(@PathParam("inserir")String content){
         Gson g = new Gson();
         Usuario u = g.fromJson(content, Usuario.class);
         UsuarioDAO dao = new UsuarioDAO();
-        return dao.inserirUsuario(u);    
+        return dao.inserirUsuario(u);
     }
     //metodo para deletar usuario
     @GET

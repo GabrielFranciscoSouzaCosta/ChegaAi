@@ -31,16 +31,21 @@ public List<Evento> getEventos(){
     return eventos;
 }
 //metodo para inserir evento
-public String inserirEvento(Evento e){
+public String inserirEvento(Evento e, int idUsuario){
     
     String titulo = e.getTitulo();
     String descricao = e.getDescricao();
     String data = e.getData();
     String endereco = e.getEndereco();
     
+
     Con c = new Con();
     Session session =  c.conecta(); // chama o metodo de conectar
-    StatementResult result = session.run("CREATE (u:Evento {titulo:'"+ titulo +"', descricao:'"+descricao +"',data:'"+data+"', endereco:'"+endereco+"'})");
+    StatementResult result = session.run("CREATE (u:Evento {titulo:'"+ titulo +"', descricao:'"+descricao +"',data:'"+data+"', endereco:'"+endereco+"'}) return ID(u) as id");
+    
+    Record record = result.next();
+    // aqui estou rodando o comando de criar a relação de usuario criou evento
+    session.run("match  (u:Usuario), (e:Evento) where  ID(u) ="+idUsuario+"  and  ID(e) = "+record.get("id").asInt()+" CREATE (u)-[:CRIA]->(e)");
     c.encerraConexao();
     
     if(result!= null){

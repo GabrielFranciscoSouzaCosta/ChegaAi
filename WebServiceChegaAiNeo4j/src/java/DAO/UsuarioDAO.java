@@ -75,29 +75,19 @@ public Sessao autenticacao(String email, String senha){
     Con c = new Con();
     Session session = c.conecta(); // chama o metodo para conectar
     
-    StatementResult result = session.run("match (u:Usuario) where u.email= '"+ email +"' AND u.senha ='" + senha+"'  return u.nome as nome, u.email as email,ID(u) as id, u.senha as senha ");
+    StatementResult result = session.run("match (u:Usuario) where u.email= '"+ email +"' AND u.senha ='" + senha+"'  return u.nome as nome, u.email as email, ID(u) as idUsuario, u.senha as senha ");
     
     if(result == null){
      
         return null;
         
     }else{
-    
-        //Sessao criaSessao = new Sessao(); // instancia um objeto sessao
-        Usuario u = new Usuario();
-        
-        Record record = result.next();        
-    
-            u.setId(record.get("id").asInt());
-            u.setNome(record.get("nome").asString());
-            u.setEmail(record.get("email").asString());    
-        
+        Record record = result.next();         
         //aqui estou criando um nodo de sessao no banco 
-        StatementResult result2 = session.run("create (n:Sessao{email:'"+record.get("email").asString()+"',senha:'"+ record.get("senha").asString() + "',nome:'"+record.get("nome").asString()+"'}) return ID(n) as id");
+        StatementResult result2 = session.run("create (n:Sessao{idUsuario:'"+record.get("idUsuario")+"', email:'"+record.get("email").asString()+ "', nome:'"+record.get("nome").asString()+"'}) return ID(n) as id");
         Record record2 = result2.next();
-        
         //chama o construtor da sessao mandando o id e o objeto usuario da sessao
-        Sessao criaSessao= new Sessao(record2.get("id").asInt(),u);
+        Sessao criaSessao= new Sessao(record2.get("id").asInt(),record.get("email").asString(),record.get("senha").asString(),record.get("idUsuario").asInt());
         c.encerraConexao();
         
         return criaSessao; // retorna o objeto sessao que foi gerada  
