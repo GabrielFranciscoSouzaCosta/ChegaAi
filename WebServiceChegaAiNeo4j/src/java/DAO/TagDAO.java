@@ -30,7 +30,31 @@ public List<Tag> getTags(){
     c.encerraConexao();
     return tags;
 }
-    //inserir tags
+
+// retorna as tags de um usuario
+public List<Tag> getTagsUser(int id){
+    
+    List<Tag> tags = new ArrayList<>(); // cria a lista de users
+    Tag t = null;
+    Con c = new Con(); // cria o objeto de conexao
+    Session session =  c.conecta(); // chama o metodo de conectar
+    StatementResult result = session.run("match (u:Usuario)-[r:POSSUI]->(n:Tag)  where ID(u)="+id+"  return n.nome as nome, ID(n) as id");
+        
+    while(result.hasNext()){
+        Record record = result.next();
+        t = new Tag();
+        t.setId(record.get("id").asInt());
+        t.setNome(record.get("nome").asString());
+        
+        tags.add(t);
+    }
+    c.encerraConexao();
+    return tags;
+}
+
+
+
+//inserir tags
 public String inserirTag(String t, int id){ // t =  nome da tag. id = id do nodo a ser conectado com ela
     int idTag = 0;
     int relacao = 0;    

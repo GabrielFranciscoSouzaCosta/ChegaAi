@@ -39,6 +39,19 @@ public class TagWS {
         
         return g.toJson(tags); 
     }
+      //metodo para listar tags de um usuario
+    
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/listarTags/{id}")
+    public String listarTagsUser(@PathParam("id") int id){
+        Gson g = new Gson(); // cria objeto da google
+        TagDAO dao = new TagDAO(); // cria objeto data controle 
+        List<Tag> tags = dao.getTagsUser(id); // cria lista de tags 
+        
+        return g.toJson(tags); 
+    }
     
     //chama o metodo para inserir tag
     @GET

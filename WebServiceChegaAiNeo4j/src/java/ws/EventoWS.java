@@ -33,13 +33,26 @@ public class EventoWS {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("listar")
-    public String listarUsuarios(){
+    public String listarEventos(){
         Gson g = new Gson();
         EventoDAO dao = new EventoDAO();
         List<Evento> eventos = dao.getEventos();
         
         return g.toJson(eventos);
     }
+    
+    // listar eventos criados por um usuario
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("criados/{id}")
+    public String listarEventosUsuario(@PathParam("id") int idUsuario){
+        Gson g = new Gson();
+        EventoDAO dao = new EventoDAO();
+        List<Evento> eventos = dao.eventosUsuario(idUsuario);
+        
+        return g.toJson(eventos);
+    }
+    
     
     // inserir eventos 
     @GET
