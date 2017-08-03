@@ -63,7 +63,7 @@ public String inserirTag(@PathParam("content")String content, @PathParam("id") i
         return dao.inserirTag(content,id);    
     }
     
-    //metodo para deletar tag
+    //metodo para deletar tag administrador
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deletarTag/{id}")
@@ -75,7 +75,18 @@ public String inserirTag(@PathParam("content")String content, @PathParam("id") i
             return "false";
         }
     }
-    
+    //deletar relacao da tag com usuario ou evento
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/deletarRelacao/{idTag}/{idNodo}")
+    public String deletarRelacao(@PathParam("idTag")int idTag, @PathParam("idNodo")int idNodo ){
+        TagDAO dao = new TagDAO();
+        if (dao.deletarRelacao(idTag,idNodo)){
+            return "true";
+        }else {
+            return "false";
+        }
+    }
     
     // metodo para buscar uma tag
     @GET

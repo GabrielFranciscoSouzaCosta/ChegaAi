@@ -85,7 +85,7 @@ public String inserirTag(String t, int id){ // t =  nome da tag. id = id do nodo
 }
    
     
-    //deletar tags
+//deletar tag
 public boolean deletarTag(int id){
     Con c = new Con();
     Session session = c.conecta(); // chama o metodo para conectar
@@ -99,6 +99,24 @@ if(result!= null){
     }
 
 }
+
+//deletar relacao da tag com usuario ou evento
+public boolean deletarRelacao(int idTag, int idNodo){
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("match (n)-[r:POSSUI]->(t:Tag)  where ID(n)="+idNodo+" and ID(t)= "+idTag+" delete r");
+    c.encerraConexao();
+
+if(result!= null){
+        return true;
+    }else{
+        return false;
+    }
+
+}
+
+
+
     //atualizar tags        
     public Tag buscarTag(int id){
     Con c = new Con();
