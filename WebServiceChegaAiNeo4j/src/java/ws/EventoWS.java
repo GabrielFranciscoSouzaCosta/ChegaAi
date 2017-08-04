@@ -41,6 +41,18 @@ public class EventoWS {
         return g.toJson(eventos);
     }
     
+    //listar recomendações
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("recomendacoes/{id}")
+    public String listarRecomendacoes(@PathParam("id") int idUsuario){
+        Gson g = new Gson();
+        EventoDAO dao = new EventoDAO();
+        List<Evento> eventos = dao.recomendacoes(idUsuario);
+        
+        return g.toJson(eventos);
+    }
+    
     // listar eventos criados por um usuario
     @GET
     @Produces(MediaType.APPLICATION_JSON)

@@ -111,6 +111,32 @@ public List<Evento> eventosUsuario(int id){
     return eventos;
 }
 
+// recomendacoes
+public List<Evento> recomendacoes(int id){
+    List<Evento> eventos = new ArrayList<>(); 
+    Evento e = null;
+    Con c = new Con(); // cria o objeto de conexao
+    Session session =  c.conecta(); // chama o metodo de conectar
+    
+    StatementResult result = session.run("match (u:Usuario)-[:POSSUI]->(t:Tag)<-[:POSSUI]-(n:Evento)  where ID(u)="+id+" return n.titulo as titulo, n.descricao as descricao, ID(n) as id, n.data as data, n.endereco as endereco");
+    
+    while(result.hasNext()){
+        Record record = result.next();
+        e= new Evento();
+        e.setId(record.get("id").asInt());
+        e.setDescricao(record.get("descricao").asString());
+        e.setTitulo(record.get("titulo").asString());
+        e.setData(record.get("data").asString());
+        e.setEndereco(record.get("endereco").asString());
+
+        eventos.add(e);
+    }
+    c.encerraConexao();
+    return eventos;
+}
+
+
+
 //metodo para atualizar evento
 public boolean atualizarEvento(Evento e){
     Con c = new Con();
