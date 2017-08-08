@@ -68,6 +68,50 @@ if(result!= null){
         return false;
     }
 }
+
+
+//metodo para usuario recusar evento
+public boolean recusa(int idUsuario, int idEvento){
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("match (u:Usuario) , (e:Evento)  where ID(u) = "+idUsuario+" and ID(e)= "+idEvento+" create (u)-[:RECUSA]->(e)");
+c.encerraConexao();
+
+if(result!= null){
+        return true;
+    }else{
+        return false;
+    }
+}
+//naoTenhoInteresse
+public boolean naoTenhoInteresse(int idUsuario, int idEvento){
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("match (u:Usuario) , (e:Evento)  where ID(u) = "+idUsuario+" and ID(e)= "+idEvento+" create (u)-[:NaoTenhoInteresse]->(e)");
+c.encerraConexao();
+
+if(result!= null){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//naoTenhoInteresse
+public boolean participa(int idUsuario, int idEvento){
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("match (u:Usuario) , (e:Evento)  where ID(u) = "+idUsuario+" and ID(e)= "+idEvento+" create (u)-[:TenhoInteresse]->(e)");
+c.encerraConexao();
+
+if(result!= null){
+        return true;
+    }else{
+        return false;
+    }
+}        
+        
+
 // metodo para buscar um evento
 public Evento buscarEvento(int id){
     Con c = new Con();

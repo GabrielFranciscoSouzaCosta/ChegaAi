@@ -91,6 +91,47 @@ public class EventoWS {
         }
     }
     
+     //metodo para criar relacao de usuario recusa evento
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/recusa/{idUsuario}/{idEvento}")
+    public String recusa(@PathParam("idUsuario")int idUsuario , @PathParam("idEvento")int idEvento){
+        EventoDAO dao = new EventoDAO();
+        
+        if (dao.recusa(idUsuario,idEvento)){
+            return "true";
+        }else {
+            return "false";
+        }
+    }
+    
+     //metodo para criar relacao de usuario nao tem interesse em evento
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/naoTenhoInteresse/{idUsuario}/{idEvento}")
+    public String naoTenhoInteresse(@PathParam("idUsuario")int idUsuario , @PathParam("idEvento")int idEvento){
+        EventoDAO dao = new EventoDAO();
+        
+        if (dao.naoTenhoInteresse(idUsuario,idEvento)){
+            return "true";
+        }else {
+            return "false";
+        }
+    }
+       //metodo para criar relacao de usuario nao tem interesse em evento
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/participa/{idUsuario}/{idEvento}")
+    public String participa(@PathParam("idUsuario")int idUsuario , @PathParam("idEvento")int idEvento){
+        EventoDAO dao = new EventoDAO();
+        
+        if (dao.participa(idUsuario,idEvento)){
+            return "true";
+        }else {
+            return "false";
+        }
+    }
+    
     //metodo para listar 1 evento 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
