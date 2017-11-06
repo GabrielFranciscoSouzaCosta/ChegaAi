@@ -53,6 +53,18 @@ public class EventoWS {
         return g.toJson(eventos);
     }
     
+     //listar eventos de interesse
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("eventosDeInteresse/{id}")
+    public String listarEventosdeInteresses(@PathParam("id") int idUsuario){
+        Gson g = new Gson();
+        EventoDAO dao = new EventoDAO();
+        List<Evento> eventos = dao.interesses(idUsuario);
+        
+        return g.toJson(eventos);
+    }
+    
     // listar eventos criados por um usuario
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -91,7 +103,9 @@ public class EventoWS {
         }
     }
     
-     //metodo para criar relacao de usuario recusa evento
+    
+    
+    //metodo para criar relacao de usuario recusa evento
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/recusa/{idUsuario}/{idEvento}")
@@ -99,6 +113,19 @@ public class EventoWS {
         EventoDAO dao = new EventoDAO();
         
         if (dao.recusa(idUsuario,idEvento)){
+            return "true";
+        }else {
+            return "false";
+        }
+    }
+    //metodo para desfazer interesse no evento
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/desfazerIntesse/{idUsuario}/{idEvento}")
+    public String desfazRelacao(@PathParam("idUsuario")int idUsuario , @PathParam("idEvento")int idEvento){
+        EventoDAO dao = new EventoDAO();
+        
+        if (dao.desfazInteresse(idUsuario,idEvento)){
             return "true";
         }else {
             return "false";

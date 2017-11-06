@@ -97,7 +97,7 @@ if(result!= null){
     }
 }
 
-//naoTenhoInteresse
+//TenhoInteresse
 public boolean participa(int idUsuario, int idEvento){
     Con c = new Con();
     Session session = c.conecta(); // chama o metodo para conectar
@@ -109,8 +109,22 @@ if(result!= null){
     }else{
         return false;
     }
+} 
+
+
+//TenhoInteresse
+public boolean desfazInteresse(int idUsuario, int idEvento){
+    Con c = new Con();
+    Session session = c.conecta(); // chama o metodo para conectar
+    StatementResult result = session.run("match (n:Usuario)-[r:TenhoInteresse]->(e:Evento)  where ID(n)="+idUsuario+" and ID(e)= "+idEvento+" delete r");
+c.encerraConexao();
+
+if(result!= null){
+        return true;
+    }else{
+        return false;
+    }
 }        
-        
 
 // metodo para buscar um evento
 public Evento buscarEvento(int id){
@@ -162,7 +176,31 @@ public List<Evento> recomendacoes(int id){
     Con c = new Con(); // cria o objeto de conexao
     Session session =  c.conecta(); // chama o metodo de conectar
     
-    StatementResult result = session.run("match (u:Usuario)-[:POSSUI]->(t:Tag)<-[:POSSUI]-(n:Evento)  where ID(u)="+id+" return n.titulo as titulo, n.descricao as descricao, ID(n) as id, n.data as data, n.endereco as endereco");
+    StatementResult result = session.run("match (u:Usuario)-[:POSSUI]->(t:Tag)<-[:POSSUI]-(n:Evento)  where ID(u)="+id+" and NOT (n)<-[:RECUSA]-(u) and NOT (n)<-[:TenhoInteresse]-(u)return n.titulo as titulo, n.descricao as descricao, ID(n) as id, n.data as data, n.endereco as endereco");
+    
+    while(result.hasNext()){
+        Record record = result.next();
+        e= new Evento();
+        e.setId(record.get("id").asInt());
+        e.setDescricao(record.get("descricao").asString());
+        e.setTitulo(record.get("titulo").asString());
+        e.setData(record.get("data").asString());
+        e.setEndereco(record.get("endereco").asString());
+
+        eventos.add(e);
+    }
+    c.encerraConexao();
+    return eventos;
+}
+
+//  eventos de interesse
+public List<Evento> interesses(int id){
+    List<Evento> eventos = new ArrayList<>(); 
+    Evento e = null;
+    Con c = new Con(); // cria o objeto de conexao
+    Session session =  c.conecta(); // chama o metodo de conectar
+    
+    StatementResult result = session.run("match (n:Usuario)-[:TenhoInteresse]->(e:Evento) where ID(n)="+id+" return e.titulo as titulo, e.descricao as descricao, ID(e) as id, e.data as data, e.endereco as endereco");
     
     while(result.hasNext()){
         Record record = result.next();
